@@ -69,6 +69,7 @@ src_configure() {
 		-DCMAKE_BUILD_TYPE=${buildtype}
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr/lib/hip/$(ver_cut 1-2)"
 		-DBUILD_HIPIFY_CLANG=$(usex hipify)
+		-DHIP_PLATFORM=rocclr
 		-DHIP_COMPILER=clang
 		-DHIP_RUNTIME=ROCclr
 		-DROCM_PATH="${EPREFIX}/usr"

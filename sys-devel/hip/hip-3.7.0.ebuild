@@ -27,7 +27,6 @@ RDEPEND="${DEPEND}"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-3.7.0-DisableTest.patch"
-	"${FILESDIR}/${PN}-3.7.0-add-include-directories.patch"
 	"${FILESDIR}/${PN}-3.5.1-config-cmake-in.patch"
 	"${FILESDIR}/${PN}-3.5.1-hip_vector_types.patch"
 	"${FILESDIR}/${PN}-3.5.1-detect_offload-arch_for_clang-roc.patch"
@@ -46,13 +45,15 @@ src_prepare() {
 
 	#prefixing hipcc and its utils
 	grep -rl --exclude-dir=build/ "/usr" ${S} | xargs sed -e "s:/usr:${EPREFIX}/usr:g" -i || die
+	eapply "${FILESDIR}/${PN}-3.7.0-add-include-directories.patch"
+	sed -e "s:/usr:${EPREFIX}/usr:g" -i ${S}/rocclr/CMakeLists.txt || die
 
 	eapply_user
 	cmake-utils_src_prepare
 }
 
 src_configure() {
-	strip-flags
+	# strip-flags
 	if ! use debug; then
 		append-cflags "-DNDEBUG"
 		append-cxxflags "-DNDEBUG"
@@ -86,7 +87,7 @@ src_configure() {
 src_install() {
 	echo "HSA_PATH=${EPREFIX}/usr" > 99hip || die
 	echo "ROCM_PATH=${EPREFIX}/usr" >> 99hip || die
-#	echo "HIP_PLATFORM=hcc" >> 99hip || die
+	# echo "HIP_PLATFORM=hcc" >> 99hip || die
 	echo "HIP_PLATFORM=rocclr" >> 99hip || die
 	echo "HIP_RUNTIME=ROCclr" >> 99hip || die
 	echo "HIP_COMPILER=clang" >> 99hip || die
