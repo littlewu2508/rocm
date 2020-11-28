@@ -52,6 +52,7 @@ src_prepare() {
 }
 
 src_configure() {
+	sed -e "s:include_directories(/usr/include/rocclr:include_directories(${EPREFIX}/usr/include/rocclr:g" -i ${S}/rocclr/CMakeLists.txt || die
 	strip-flags
 	if ! use debug; then
 		append-cflags "-DNDEBUG"

@@ -7,9 +7,8 @@ inherit cmake-utils flag-o-matic git-r3
 
 DESCRIPTION="AMD's library for BLAS on ROCm."
 HOMEPAGE="https://github.com/ROCmSoftwarePlatform/rocBLAS"
-SRC_URI="https://github.com/ROCmSoftwarePlatform/rocBLAS/archive/rocm-${PV}.tar.gz -> rocm-rocBLAS-${PV}.tar.gz"
-# currently there is no released file for Tensile 3.7.0, checkout using git
-#	https://github.com/ROCmSoftwarePlatform/Tensile/archive/rocm-${PV}.tar.gz -> rocm-Tensile-${PV}.tar.gz"
+SRC_URI="https://github.com/ROCmSoftwarePlatform/rocBLAS/archive/rocm-${PV}.tar.gz -> rocm-rocBLAS-${PV}.tar.gz
+https://github.com/ROCmSoftwarePlatform/Tensile/archive/af71ea890a893e647bf2cf4571a90297d65689ca.tar.gz -> rocm-Tensile-${PV}.tar.gz"
 
 LICENSE=""
 KEYWORDS=""
@@ -38,15 +37,15 @@ S="${WORKDIR}/rocBLAS-rocm-${PV}"
 
 rocBLAS_V="0.1"
 
-src_unpack() {
-	unpack ${A}
-
-	EGIT_REPO_URI="https://github.com/ROCmSoftwarePlatform/Tensile.git"
-	EGIT_COMMIT="af71ea890a893e647bf2cf4571a90297d65689ca"
-	git-r3_fetch ${EGIT_REPO_URI} ${EGIT_COMMIT}
-	git-r3_checkout ${EGIT_REPO_URI} "${WORKDIR}/Tensile-rocm-${PV}"
-}
-
+# src_unpack() {
+# 	unpack ${A}
+# 
+# 	EGIT_REPO_URI="https://github.com/ROCmSoftwarePlatform/Tensile.git"
+# 	EGIT_COMMIT="af71ea890a893e647bf2cf4571a90297d65689ca"
+# 	git-r3_fetch ${EGIT_REPO_URI} ${EGIT_COMMIT}
+# 	git-r3_checkout ${EGIT_REPO_URI} "${WORKDIR}/Tensile-rocm-${PV}"
+# }
+# 
 src_prepare() {
 	# Changes in Tensile ...
 	sed -e "s:hipFlags = \[\"--genco\", :hipFlags = \[:" -i "${WORKDIR}/Tensile-rocm-${PV}/Tensile/TensileCreateLibrary.py" || die

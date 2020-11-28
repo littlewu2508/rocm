@@ -27,7 +27,7 @@ DEPEND="${RDEPEND}
 	dev-libs/msgpack
 	=dev-lang/python-3*
 	>=dev-python/virtualenv-15.1.0
-	dev-python/msgpack[python_targets_python3_6]
+	dev-python/msgpack[python_targets_python3_8]
 	dev-python/pyyaml
 	dev-perl/File-Which"
 
@@ -160,5 +160,5 @@ src_configure() {
 
 src_install() {
 	cmake-utils_src_install
-	chrpath --delete "${D}/usr/lib64/librocblas.so.${rocBLAS_V}"
+	chrpath --delete "${D}/${EPREFIX}/usr/lib64/librocblas.so.${rocBLAS_V}"
 }
